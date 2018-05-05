@@ -1,6 +1,7 @@
 import cv2
 import os
 import numpy as np
+import scipy.ndimage
 
 DEFAULT_HEIGHT = 100
 DEFAULT_WIDTH = 100
@@ -34,7 +35,7 @@ def create_minus_image():
 
     minus = np.rot90(blank_image)
 
-    minus = cv2.resize(minus, (28,28))
+    minus = cv2.resize(minus, (28, 28))
     return minus
 
 
@@ -46,5 +47,13 @@ def create_plus_image():
     return plus
 
 
-minus = create_plus_image()
+def create_multiply_image():
+    plus = create_plus_image()
+    plus = scipy.ndimage.rotate(plus, 45.0)
+    multiply = plus[8:32, 8:32]
+    multiply = cv2.resize(multiply, (28, 28))    
+    return multiply
+
+
+minus = create_multiply_image()
 show_image(minus)
