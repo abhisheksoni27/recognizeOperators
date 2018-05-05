@@ -14,7 +14,7 @@ def create_blank_image(width=DEFAULT_WIDTH, height=DEFAULT_HEIGHT):
 
 def show_image(image):
     cv2.imshow("image", image)
-    cv2.waitKey(0)
+    cv2.waitKey(1000)
     cv2.destroyAllWindows()
 
 
@@ -54,6 +54,15 @@ def create_multiply_image():
     multiply = cv2.resize(multiply, (28, 28))    
     return multiply
 
+def create_divide_image():
+    minus = create_minus_image()
+    start_y = int(28 * 0.25)
+    start_x = int(28 * 0.5)
+    radius = 2
+    cv2.circle(minus, (start_x, start_y), radius, (255,255,255), -1)
+    divide = cv2.circle(minus, (28 -start_x, 28-start_y), radius, (255,255,255), -1)
+    
+    return divide
 
-minus = create_multiply_image()
+minus = create_divide_image()
 show_image(minus)
