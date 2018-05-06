@@ -1,5 +1,6 @@
 import cv2
 import os
+import random
 import numpy as np
 import scipy.ndimage
 
@@ -61,8 +62,20 @@ def create_divide_image():
     radius = 2
     cv2.circle(minus, (start_x, start_y), radius, (255,255,255), -1)
     divide = cv2.circle(minus, (28 -start_x, 28-start_y), radius, (255,255,255), -1)
-    
+
     return divide
 
-minus = create_divide_image()
-show_image(minus)
+operators = {
+    "images":[],
+    "labels":[]
+}
+
+for i in range(1000):
+    minus = create_minus_image()
+    minus = scipy.ndimage.rotate(minus, 10 * random.random() * -1**i)
+    # cv2.randu(minus, 1, 1)
+    minus = cv2.resize(minus, (28,28))
+    operators["images"].append(minus)
+    operators["labels"].append("minus")
+    print(i)
+    cv2.imwrite("dataset/minus" + str(i) + ".tif", minus)
