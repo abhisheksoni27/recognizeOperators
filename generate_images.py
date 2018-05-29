@@ -2,6 +2,7 @@ import cv2
 import os
 import random
 import numpy as np
+import pandas as pd 
 import scipy.ndimage
 
 DEFAULT_HEIGHT = 100
@@ -65,17 +66,27 @@ def create_divide_image():
 
     return divide
 
-operators = {
-    "images":[],
-    "labels":[]
-}
+operator_names = ["minus", "plus", "divide","multiply"]
 
-for i in range(1000):
-    minus = create_minus_image()
-    minus = scipy.ndimage.rotate(minus, 10 * random.random() * -1**i)
-    # cv2.randu(minus, 1, 1)
-    minus = cv2.resize(minus, (28,28))
-    operators["images"].append(minus)
-    operators["labels"].append("minus")
-    print(i)
-    cv2.imwrite("dataset/minus" + str(i) + ".tif", minus)
+for j in operator_names:
+    operators = []
+    for i in range(1000):
+        print("{0} - {1}".format(j, i))
+        image = []
+        if j == "minus" :
+            image = create_minus_image()
+        elif j == "plus":
+            image = create_plus_image()
+        elif j == "divide":
+            image = create_divide_image()
+        elif j == "multiply":
+            image = create_multiply_image()
+
+        image = scipy.ndimage.rotate(image, 10 * random.random() * -1**i)
+        image = cv2.resize(image, (28,28))
+        image = image.flatten()
+        operators.append(image)
+
+    operators = np.array(operators)
+    df = pd.DataFrame(operators)
+    df.to_csv("{0}_images.csv".format(j), header=False)
