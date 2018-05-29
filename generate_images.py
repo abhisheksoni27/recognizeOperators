@@ -70,7 +70,7 @@ operator_names = ["minus", "plus", "divide","multiply"]
 
 for j in operator_names:
     operators = []
-    for i in range(1000):
+    for i in range(5000):
         print("{0} - {1}".format(j, i))
         image = []
         if j == "minus" :
